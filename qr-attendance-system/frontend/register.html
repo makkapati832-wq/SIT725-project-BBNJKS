@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Registration</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header><h2>User Registration</h2></header>
+
+<div class="container">
+  <input id="name" placeholder="Full Name">
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+
+  <select id="role">
+    <option value="">Select Role</option>
+    <option value="student">Student</option>
+    <option value="teacher">Teacher</option>
+  </select>
+
+  <button onclick="register()">Register</button>
+  <p id="msg" class="error"></p>
+
+  <p>Already registered? <a href="index.html">Login</a></p>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

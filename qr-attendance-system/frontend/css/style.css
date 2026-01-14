@@ -1,0 +1,7 @@
+body { font-family: Arial; background:#f4f6f9; margin:0; }
+header { background:#2c3e50; color:white; padding:15px; text-align:center; }
+.container { max-width:400px; margin:auto; padding:20px; }
+input, select, button { width:100%; padding:10px; margin:10px 0; }
+button { background:#3498db; color:white; border:none; }
+.nav { display:flex; flex-wrap:wrap; gap:10px; padding:20px; }
+.error { color:red; }

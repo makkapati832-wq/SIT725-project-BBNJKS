@@ -1,0 +1,8 @@
+<script src="https://cdn.jsdelivr.net/npm/qrious"></script>
+<canvas id="qr"></canvas>
+
+<script>
+const code = "ATT-" + Date.now();
+sessionStorage.setItem("session", code);
+new QRious({ element: qr, value: code, size: 200 });
+</script>
