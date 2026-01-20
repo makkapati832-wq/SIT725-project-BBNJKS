@@ -5,8 +5,20 @@ const sessionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  // Linked to Class Model
+  classId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Class",
+    required: true
+  },
+  // Linked to User Model
+  teacherId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
   createdBy: {
-    type: String,
+    type: String, 
     required: true
   },
   qrCode: {

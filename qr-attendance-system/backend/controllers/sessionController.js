@@ -3,16 +3,23 @@ const QRCode = require("qrcode");
 
 // Create new session & generate QR (FR-3)
 exports.createSession = async (req, res) => {
-  const { sessionName, createdBy } = req.body;
+  // Destructure classId and teacherId from request body
+  const { sessionName, createdBy, classId, teacherId } = req.body;
 
   try {
+    // Validate inputs
+    if (!classId || !teacherId) {
+      return res.status(400).json({ message: "Class and Teacher are required" });
+    }
+
     const newSession = new Session({
       sessionName,
-      createdBy
+      createdBy,
+      classId,   // Save Class ID
+      teacherId  // Save Teacher ID
     });
 
     // Generate QR data
-    // The format "SESSION:ID" matches what the Frontend Scanner expects
     const qrData = `SESSION:${newSession._id}`;
     const qrImage = await QRCode.toDataURL(qrData);
 

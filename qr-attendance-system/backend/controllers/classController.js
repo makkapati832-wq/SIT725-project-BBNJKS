@@ -5,7 +5,6 @@ exports.createClass = async (req, res) => {
   const { className, classCode, teacherId, description } = req.body;
 
   try {
-    // Check if class code already exists (Prevent Duplicates)
     const existingClass = await Class.findOne({ classCode });
     if (existingClass) {
       return res.status(400).json({ message: "Class code already exists" });
@@ -31,9 +30,6 @@ exports.updateClass = async (req, res) => {
   const updates = req.body;
 
   try {
-    // Find class by ID and update it
-    // { new: true } returns the updated document
-    // { runValidators: true } ensures updates follow Schema rules
     const updatedClass = await Class.findByIdAndUpdate(
       classId, 
       updates, 
@@ -50,13 +46,37 @@ exports.updateClass = async (req, res) => {
   }
 };
 
-// NEW: Get All Classes (Required for Student Dashboard)
+// NEW: Delete a Class
+exports.deleteClass = async (req, res) => {
+  const { classId } = req.params;
+  try {
+    const deletedClass = await Class.findByIdAndDelete(classId);
+    if (!deletedClass) {
+      return res.status(404).json({ message: "Class not found" });
+    }
+    res.status(200).json({ message: "Class deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get All Classes (For Student Dashboard)
 exports.getAllClasses = async (req, res) => {
   try {
-    // Fetch all classes and sort by newest created first
     const classes = await Class.find().sort({ createdAt: -1 });
     res.status(200).json(classes);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch classes" });
+  }
+};
+
+// NEW: Get Classes specifically for a Teacher (For the Dropdown)
+exports.getTeacherClasses = async (req, res) => {
+  const { teacherId } = req.params;
+  try {
+    const classes = await Class.find({ teacherId: teacherId });
+    res.status(200).json(classes);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch teacher classes" });
   }
 };

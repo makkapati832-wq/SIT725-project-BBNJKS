@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary-color: #6c63ff;
+            --secondary-color: #5a52d6;
+            --accent-color: #ff6584;
+            --bg-color: #f4f7fe;
+            --card-bg: #ffffff;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Decorative Background Blob */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.1) 0%, rgba(255, 101, 132, 0.05) 100%);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(80px);
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* --- Header Section --- */
+        .welcome-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 40px rgba(108, 99, 255, 0.08);
+            border: 1px solid rgba(108, 99, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-text h1 {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text h1 span {
+            color: var(--primary-color);
+        }
+
+        #welcome-msg {
+            font-size: 1.1rem;
+            color: var(--text-light) !important;
+            font-weight: 500;
+        }
+
+        .header-img {
+            max-width: 350px;
+            width: 100%;
+            height: auto;
+            animation: float 4s ease-in-out infinite;
+            /* This filter turns the blue image into purple to match your theme */
+            filter: hue-rotate(30deg) drop-shadow(0 10px 15px rgba(108, 99, 255, 0.2));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* --- Navigation Tabs --- */
+        .nav-actions {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Inactive State */
+        .tab-btn.btn-secondary {
+            background: #f8f9fa;
+            color: var(--text-light);
+            border: 2px solid #eef2f6;
+            box-shadow: none;
+        }
+
+        .tab-btn.btn-secondary:hover {
+            background: #fff;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Active State */
+        .tab-btn.btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+            border-color: transparent;
+        }
+
+        /* --- Content Cards --- */
+        .custom-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.02);
+            animation: fadeInUp 0.4s ease-out;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .custom-card h3 {
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .custom-card h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* --- Form Elements --- */
+        .form-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            background-color: #f8f9fc;
+            border: 2px solid #eef2f6;
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            color: var(--text-dark);
+            transition: all 0.2s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: #fff;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.1);
+            outline: none;
+        }
+
+        /* --- Buttons --- */
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 0.8rem 2rem;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary-custom:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(108, 99, 255, 0.4);
+        }
+
+        .btn-primary-custom:disabled {
+            background: #b2bec3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-warning {
+            background: #ff9f43;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 10px;
+        }
+        
+        .btn-danger {
+            background: #ff6584;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 10px;
+        }
+
+        /* --- Session Result (QR Area) --- */
+        #sessionResult {
+            background: #f0f3ff;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 2px dashed var(--primary-color);
+        }
+
+        .qr-img {
+            max-width: 200px;
+            border: 8px solid white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin-top: 1rem;
+        }
+
+        /* Utility */
+        .d-none { display: none !important; }
+        .gap-2 { gap: 10px; }
+
+        @media (max-width: 768px) {
+            .welcome-section {
+                flex-direction: column-reverse;
+                text-align: center;
+                padding: 2rem;
+                gap: 2rem;
+            }
+            .header-img {
+                max-width: 250px;
+            }
+            .nav-actions {
+                flex-direction: column;
+            }
+            .tab-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="navbar-placeholder"></div>
+
+    <div class="dashboard-container">
+        
+        <!-- Header -->
+        <div class="welcome-section">
+            <div class="welcome-text">
+                <h1>Teacher <span>Dashboard</span></h1>
+                <p id="welcome-msg">Loading instructor profile...</p>
+            </div>
+            <!-- UPDATED WORKING IMAGE: A dashboard/working illustration -->
+            <img src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" 
+                 alt="Teacher Dashboard" 
+                 class="header-img">
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-actions">
+            <button class="btn btn-secondary tab-btn" onclick="showTab('session')" id="btn-session">
+                <i class="bi bi-qr-code"></i> Create Session
+            </button>
+            <button class="btn btn-secondary tab-btn" onclick="showTab('create')" id="btn-create">
+                <i class="bi bi-plus-circle"></i> Create Class
+            </button>
+            <button class="btn btn-secondary tab-btn" onclick="showTab('manage')" id="btn-manage">
+                <i class="bi bi-pencil-square"></i> Manage Classes
+            </button>
+        </div>
+
+        <div id="global-error" class="alert alert-danger d-none text-center"></div>
+
+        <!-- TAB 1: Create Session -->
+        <div id="tab-session" class="custom-card tab-content">
+            <h3>Start Attendance Session</h3>
+            <p class="text-secondary mb-4">Generate a QR code for your students to scan.</p>
+            
+            <form id="createSessionForm">
+                <div class="mb-4">
+                    <label class="form-label">Select Subject</label>
+                    <select id="sessionClassId" class="form-select" required>
+                        <option value="">-- Choose a Class --</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Session Name</label>
+                    <input type="text" id="sessionName" class="form-control" placeholder="e.g. Lecture 4 - Intro to AI" disabled required>
+                </div>
+                <button type="submit" id="btnGenQr" class="btn btn-primary-custom w-100" disabled>Generate QR Code</button>
+            </form>
+
+            <div id="sessionResult" class="text-center d-none">
+                <h4 style="color: var(--primary-color); font-weight:700;">Session Active!</h4>
+                <p class="mb-2">Share this Session ID with students:</p>
+                <div class="d-inline-block bg-white px-4 py-2 rounded border fw-bold mb-3 fs-5" id="resSessionId"></div>
+                <br>
+                <img id="resQrCode" class="qr-img" src="" alt="QR Code">
+            </div>
+        </div>
+
+        <!-- TAB 2: Create Class -->
+        <div id="tab-create" class="custom-card tab-content d-none">
+            <h3>Add New Class</h3>
+            <p class="text-secondary mb-4">Register a new subject in the system.</p>
+            
+            <form id="createClassForm">
+                <div class="mb-3">
+                    <label class="form-label">Class Name</label>
+                    <input type="text" id="newClassName" class="form-control" placeholder="e.g. Advanced Mathematics" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Class Code</label>
+                    <input type="text" id="newClassCode" class="form-control" placeholder="e.g. MTH-101" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Description</label>
+                    <input type="text" id="newClassDesc" class="form-control" placeholder="Brief description of the course...">
+                </div>
+                <button type="submit" class="btn btn-primary-custom w-100">Create Class</button>
+            </form>
+            <p id="createClassMsg" class="text-success text-center mt-3 fw-bold"></p>
+        </div>
+
+        <!-- TAB 3: Manage Classes -->
+        <div id="tab-manage" class="custom-card tab-content d-none">
+            <h3>Manage Classes</h3>
+            <p class="text-secondary mb-4">Update details or remove existing classes.</p>
+
+            <div class="mb-4">
+                <label class="form-label">Select Class to Edit</label>
+                <select id="manageClassSelect" class="form-select">
+                    <option value="">-- Select a Class --</option>
+                </select>
+            </div>
+
+            <form id="updateClassForm" class="d-none">
+                <div class="mb-3">
+                    <label class="form-label">Update Name</label>
+                    <input type="text" id="updClassName" class="form-control">
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Update Description</label>
+                    <input type="text" id="updClassDesc" class="form-control">
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-warning flex-fill fw-bold">Update Details</button>
+                    <button type="button" onclick="deleteClass()" class="btn btn-danger flex-fill fw-bold">Delete Class</button>
+                </div>
+            </form>
+            <p id="manageMsg" class="status-message text-center"></p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+
+    <script>
+        // 1. Auth Check
+        const user = Auth.checkAuth('teacher');
+        let myClasses = [];
+        
+        if (user) {
+            document.getElementById('welcome-msg').innerText = `Welcome back, Instructor ${user.name}`;
+            fetchMyClasses();
+            showTab('session'); // Default tab
+        }
+
+        // 2. Fetch Classes Helper
+        async function fetchMyClasses() {
+            try {
+                const { data } = await axios.get(`${API_BASE_URL}/classes/teacher/${user.id}`);
+                myClasses = data;
+                populateDropdowns();
+            } catch (err) {
+                console.error("Failed to fetch classes");
+            }
+        }
+
+        function populateDropdowns() {
+            const dropdowns = [document.getElementById('sessionClassId'), document.getElementById('manageClassSelect')];
+            dropdowns.forEach(select => {
+                select.innerHTML = '<option value="">-- Select a Class --</option>';
+                myClasses.forEach(cls => {
+                    select.innerHTML += `<option value="${cls._id}">${cls.classCode} - ${cls.className}</option>`;
+                });
+            });
+        }
+
+        // 3. Tab Switching Logic
+        function showTab(tabName) {
+            // Hide all contents
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('d-none'));
+            // Reset buttons
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('btn-primary-custom'); 
+                el.classList.add('btn-secondary');
+            });
+
+            // Show selected
+            document.getElementById(`tab-${tabName}`).classList.remove('d-none');
+            const activeBtn = document.getElementById(`btn-${tabName}`);
+            activeBtn.classList.remove('btn-secondary');
+            activeBtn.classList.add('btn-primary-custom');
+        }
+
+        // 4. Session Logic
+        document.getElementById('sessionClassId').addEventListener('change', (e) => {
+            const val = e.target.value;
+            const input = document.getElementById('sessionName');
+            const btn = document.getElementById('btnGenQr');
+            
+            if (val) {
+                input.disabled = false;
+                btn.disabled = false;
+            } else {
+                input.disabled = true;
+                btn.disabled = true;
+                input.value = '';
+            }
+        });
+
+        document.getElementById('createSessionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                const { data } = await axios.post(`${API_BASE_URL}/sessions/create`, {
+                    sessionName: document.getElementById('sessionName').value,
+                    createdBy: user.name,
+                    teacherId: user.id,
+                    classId: document.getElementById('sessionClassId').value
+                });
+                
+                document.getElementById('sessionResult').classList.remove('d-none');
+                document.getElementById('resSessionId').innerText = data.session._id;
+                document.getElementById('resQrCode').src = data.session.qrCode;
+                document.getElementById('sessionName').value = '';
+            } catch (err) {
+                alert("Failed to create session");
+            }
+        });
+
+        // 5. Create Class Logic
+        document.getElementById('createClassForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                await axios.post(`${API_BASE_URL}/classes`, {
+                    className: document.getElementById('newClassName').value,
+                    classCode: document.getElementById('newClassCode').value,
+                    description: document.getElementById('newClassDesc').value,
+                    teacherId: user.id
+                });
+                document.getElementById('createClassMsg').innerText = "✅ Class Created Successfully!";
+                document.getElementById('createClassForm').reset();
+                fetchMyClasses();
+            } catch (err) {
+                alert("Failed to create class");
+            }
+        });
+
+        // 6. Manage Class Logic
+        document.getElementById('manageClassSelect').addEventListener('change', (e) => {
+            const classId = e.target.value;
+            const form = document.getElementById('updateClassForm');
+            const selectedClass = myClasses.find(c => c._id === classId);
+
+            if (selectedClass) {
+                form.classList.remove('d-none');
+                document.getElementById('updClassName').value = selectedClass.className;
+                document.getElementById('updClassDesc').value = selectedClass.description || "";
+            } else {
+                form.classList.add('d-none');
+            }
+            document.getElementById('manageMsg').innerText = "";
+        });
+
+        document.getElementById('updateClassForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const classId = document.getElementById('manageClassSelect').value;
+            try {
+                await axios.put(`${API_BASE_URL}/classes/${classId}`, {
+                    className: document.getElementById('updClassName').value,
+                    description: document.getElementById('updClassDesc').value
+                });
+                document.getElementById('manageMsg').innerText = "✅ Class Updated Successfully";
+                document.getElementById('manageMsg').style.color = "#00b894";
+                fetchMyClasses();
+            } catch(err) {
+                alert("Update failed");
+            }
+        });
+
+        async function deleteClass() {
+            const classId = document.getElementById('manageClassSelect').value;
+            if(!confirm("Are you sure? This will delete the class permanently.")) return;
+
+            try {
+                await axios.delete(`${API_BASE_URL}/classes/${classId}`);
+                document.getElementById('manageMsg').innerText = "🗑️ Class Deleted";
+                document.getElementById('manageMsg').style.color = "#d63031";
+                document.getElementById('updateClassForm').classList.add('d-none');
+                document.getElementById('manageClassSelect').value = "";
+                fetchMyClasses();
+            } catch(err) {
+                alert("Delete failed");
+            }
+        }
+    </script>
+</body>
+</html>

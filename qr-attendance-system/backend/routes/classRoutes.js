@@ -1,16 +1,27 @@
 const express = require("express");
 const router = express.Router();
 
-// Import the controller functions (Make sure getAllClasses is included here)
-const { createClass, updateClass, getAllClasses } = require("../controllers/classController");
+const { 
+  createClass, 
+  updateClass, 
+  deleteClass, 
+  getAllClasses, 
+  getTeacherClasses 
+} = require("../controllers/classController");
 
-// FR-3: Create a new Class
+// Create Class
 router.post("/", createClass);
 
-// FR-3: Update an existing Class
+// Update Class
 router.put("/:classId", updateClass);
 
-// NEW: Get all Classes (For Student Dashboard)
+// NEW: Delete Class
+router.delete("/:classId", deleteClass);
+
+// Get all Classes (For Student Dashboard)
 router.get("/", getAllClasses);
+
+// NEW: Get classes by teacher ID (For Teacher Dashboard Dropdown)
+router.get("/teacher/:teacherId", getTeacherClasses);
 
 module.exports = router;
