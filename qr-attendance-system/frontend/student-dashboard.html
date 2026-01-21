@@ -10,7 +10,236 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
      <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary-color: #6c63ff;
+            --secondary-color: #5a52d6;
+            --accent-color: #ff6584;
+            --bg-color: #f4f7fe;
+            --card-bg: #ffffff;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Decorative Background Blob */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.1) 0%, rgba(255, 101, 132, 0.05) 100%);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(80px);
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* --- Header Section --- */
+        .welcome-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 40px rgba(108, 99, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(108, 99, 255, 0.05);
+        }
+
+        .welcome-text h1 {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text h1 span {
+            color: var(--primary-color);
+        }
+
+        #welcome-msg {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .header-img {
+            max-width: 350px;
+            width: 100%;
+            height: auto;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* --- FIXED CARD STYLES --- */
+        .glass-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.02);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            
+            /* --- FIX: Fixed height and Flexbox layout --- */
+            height: 450px;            /* Forces both cards to be this height */
+            display: flex;            /* Enables flexbox layout */
+            flex-direction: column;   /* Stacks title and content vertically */
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(108, 99, 255, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-dark);
+            flex-shrink: 0; /* Prevents title from shrinking */
+        }
+
+        .card-title i, .card-title svg {
+            color: var(--primary-color);
+        }
+
+        /* --- FIX: SCROLLABLE CLASS LIST --- */
+        #classes-list {
+            overflow-y: auto;    /* Enables vertical scrolling */
+            flex-grow: 1;        /* Takes up all remaining space in the card */
+            padding-right: 10px; /* Space for scrollbar */
+        }
+        
+        /* Custom Scrollbar Styling (Webkit) */
+        #classes-list::-webkit-scrollbar { width: 6px; }
+        #classes-list::-webkit-scrollbar-track { background: #f4f7fe; border-radius: 10px; }
+        #classes-list::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 10px; }
+        #classes-list::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
+
+        /* --- Form Styles --- */
+        .form-control {
+            background-color: #f8f9fc;
+            border: 2px solid #eef2f6;
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            background-color: #fff;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.1);
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.3);
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(108, 99, 255, 0.4);
+        }
+
+        /* --- Class List Items --- */
+        .class-list-item {
+            background: #fff;
+            border: 1px solid #eef2f6;
+            border-left: 5px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .class-list-item:hover {
+            border-left-width: 8px;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .class-list-item strong {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .class-list-item small {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* --- Alerts/Status --- */
+        #attendance-status p {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            font-weight: 500;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .text-success { color: #00b894 !important; background: #e3fdf5; }
+        .text-danger { color: #d63031 !important; background: #ffeaea; }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .welcome-section {
+                flex-direction: column-reverse;
+                text-align: center;
+                gap: 2rem;
+                padding: 2rem;
+            }
+            .header-img {
+                max-width: 250px;
+            }
+            /* On mobile, remove fixed height so it fits content naturally */
+            .glass-card {
+                height: auto;
+                max-height: 600px;
+            }
+        }
+    </style>
 </head>
 <body>
 
